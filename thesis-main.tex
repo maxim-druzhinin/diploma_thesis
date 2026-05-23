@@ -1,0 +1,69 @@
+\documentclass[a4paper,article,14pt]{extarticle}
+
+% Подключаем главный пакет со всем необходимым
+\usepackage{spbudiploma}
+% Пакеты по желанию (самые распространенные)
+% Хитрые мат. символы
+\usepackage{euscript}
+% Таблицы
+\usepackage{longtable}
+\usepackage{makecell}
+\usepackage{threeparttable}
+% Картинки (можно вставлять даже pdf)
+\usepackage[pdftex]{graphicx}
+\usepackage{wrapfig}
+\usepackage[dvipsnames]{xcolor}
+\usepackage{svg}
+% Required package
+\usepackage{tikz}
+\usetikzlibrary{positioning}
+
+\usepackage{amsthm,amssymb, amsmath}
+\usepackage{textcomp}
+\usepackage{enumitem}
+
+% \usepackage{minted} % для примеров кода (требует параметра -shell-escape)
+% \usemintedstyle{bw}
+
+\usepackage{csquotes}
+\usepackage[backend=biber,sorting=none]{biblatex}
+\addbibresource{refs.bib}
+
+\begin{document}
+
+% Титульник в файле titlepage.tex
+\input{titlepage.tex}
+
+% Содержание
+\tableofcontents
+\pagebreak
+
+jnvklfnvd \cite{itut2001pesq} \cite{akerlof1970lemons}
+
+% тест библиографии
+%\nocite{*}
+
+% \include{items/intro}
+
+% \include{items/problem}
+
+% \include{items/chap1}
+
+% \include{items/chap2}
+
+% \include{items/chap3}
+
+% % \include{items/chap4}
+
+% \include{items/concl}
+
+% \printbibliography[
+%     heading=bibintoc,
+%     title={Список литературы}
+% ]
+
+\begin{thebibliography}{1}
+    \printbibliography[heading=none]
+\end{thebibliography}
+
+\end{document}

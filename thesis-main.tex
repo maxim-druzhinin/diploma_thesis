@@ -19,6 +19,7 @@
 \usetikzlibrary{positioning}
 
 \usepackage{amsthm,amssymb, amsmath}
+\usepackage[russian]{cleveref}
 \usepackage{textcomp}
 \usepackage{enumitem}
 
@@ -38,32 +39,28 @@
 \tableofcontents
 \pagebreak
 
-jnvklfnvd \cite{itut2001pesq} \cite{akerlof1970lemons}
-
 % тест библиографии
 %\nocite{*}
 
-% \include{items/intro}
+\include{items/intro}
 
-% \include{items/problem}
+\include{items/domain_analysis&problem_statement}
 
-% \include{items/chap1}
+\include{items/system_architecture}
 
-% \include{items/chap2}
+\include{items/implementation}
 
-% \include{items/chap3}
+\include{items/conclusion}
 
-% % \include{items/chap4}
 
-% \include{items/concl}
+\printbibliography[
+    heading=bibintoc,
+    title={Список литературы}
+]
 
-% \printbibliography[
-%     heading=bibintoc,
-%     title={Список литературы}
-% ]
-
-\begin{thebibliography}{1}
-    \printbibliography[heading=none]
-\end{thebibliography}
+% какая-то хитрая обертка, но с ней как будто хуже всё выглядит
+% \begin{thebibliography}{1}
+%     \printbibliography[heading=none]
+% \end{thebibliography}
 
 \end{document}

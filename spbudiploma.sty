@@ -47,32 +47,15 @@
     \addcontentsline{toc}{section}{#1}
 }
 
-% % Размеры заголовков разделов и подразделов
-% \usepackage{titlesec}
-% % Раздел: 18pt, добавляем слово "Глава"
-% \titleformat{\section}
-% {\fontsize{18}{18}\bfseries}{
-% \hspace{-1.5mm}Глава \thesection. \hskip-1em}{1em}{}
-% % Подраздел: 16pt
-% \titleformat{\subsection}
-% {\fontsize{16}{16}\bfseries}{\hspace{-0.2mm}\thesubsection}{1em}{}
+% Размеры заголовков разделов и подразделов
 \usepackage{titlesec}
-
-\titleformat
-{\section}
-[hang]
-{\fontsize{18}{18}\bfseries}
-{\centering \thesection}
-{0ex}
-{\centering}
-
-\titleformat
-{\subsection}
-[hang]
-{\fontsize{16}{16}\bfseries}
-{\centering \thesubsection}
-{0ex}
-{\centering}
+% Раздел: 18pt, добавляем слово "Глава"
+\titleformat{\section}
+{\fontsize{18}{18}\bfseries}{
+\hspace{-1.5mm}Глава \thesection. \hskip-1em}{1em}{}
+% Подраздел: 16pt
+\titleformat{\subsection}
+{\fontsize{16}{16}\bfseries}{\hspace{-0.2mm}\thesubsection}{1em}{}
 
 % Сожержание
 % Выравнивание заголовка по центру (да, да, хак с отступом слева \hspace{0.31\textwidth})
@@ -80,7 +63,7 @@
 \renewcommand{\cfttoctitlefont}{\hspace{0.31\textwidth} \bfseries\Large}
 \renewcommand{\cftbeforetoctitleskip}{-1em}
 % Слово "Глава" в содержании
-\renewcommand{\cftsecpresnum}{\space}
+\renewcommand{\cftsecpresnum}{Глава\space}
 \newlength\mylength
 \settowidth\mylength{\cftsecpresnum}
 \addtolength\cftsecnumwidth{\mylength}
@@ -95,6 +78,7 @@
 % Интервал глав
 \setlength{\cftbeforesecskip}{4pt}
 
+
 \renewcommand{\cftsecpagefont}{\normalfont}
 
 % Шрифт подписи (caption) = 12pt
@@ -105,7 +89,11 @@
 \usepackage{import}
 
 % Пакет, реализующий гиперссылки. Никакого расскрашивания
-\usepackage[colorlinks=false,unicode=true]{hyperref}
+\usepackage[
+    colorlinks=false, % это квадраты около ссылок
+    %hidelinks,
+    unicode=true
+    ]{hyperref}
 
 \newcommand{\ITEM}{\vspace{-0.2cm}\item}
 \newcommand{\MList}[1]{\par\begin{itemize}#1\end{itemize}}

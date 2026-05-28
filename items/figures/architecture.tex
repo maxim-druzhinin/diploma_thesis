@@ -1,0 +1,113 @@
+% items/figures/architecture.tex
+% Архитектурная схема для §3 ВКР.
+% Требует: \usepackage{tikz} и tikzlibrary: positioning, arrows.meta, fit, calc, backgrounds
+
+\begin{figure}[htbp]
+\centering
+
+% Локальный хелпер: «§ 4.3» как кликабельная ссылка на нужный label
+\providecommand{\secref}[1]{\hyperref[#1]{\textsection\,\ref*{#1}}}
+
+\begin{tikzpicture}[
+  >=Stealth,
+  font=\footnotesize,
+  every node/.style={font=\footnotesize, align=left},
+  % Большой блок-слой
+  layer/.style={
+    draw=black!55,
+    rounded corners=1.5pt,
+    inner xsep=4mm,
+    inner ysep=2.5mm,
+  },
+  % Внутренний модуль (в Слое 3)
+  module/.style={
+    draw=black!40,
+    rounded corners=1pt,
+    inner xsep=2mm,
+    inner ysep=2mm,
+    text width=44mm,
+  },
+  % Стрелка между слоями
+  arr/.style={->, thick, black!55},
+  % Подпись на стрелке
+  arrlabel/.style={font=\scriptsize\itshape, text=black!60, midway, right=1mm},
+  % Заголовок слоя
+  ltitle/.style={font=\footnotesize\bfseries},
+]
+
+% ── Контекст пользователя ────────────────────────────────────────────────
+\node[layer, text width=150mm, fill=black!3] (ctx) {
+  {\footnotesize\bfseries Контекст пользователя}\\[1mm]
+  Тип пользователя \;\textperiodcentered\;
+  Уровень образования \;\textperiodcentered\;
+  Уровень погружённости \;\textperiodcentered\;
+  Цель просмотра
+};
+
+% ── Слой 1 ──────────────────────────────────────────────────────────────
+\node[layer, text width=150mm, below=8mm of ctx] (l1) {
+  {\footnotesize\bfseries Сбор данных}\\[1mm]
+  YouTube URL $\to$ метаданные \;\textperiodcentered\;
+  аудиопоток \;\textperiodcentered\;
+  видеокадры \;\textperiodcentered\; транскрипт
+};
+
+% ── Слой 2 ──────────────────────────────────────────────────────────────
+\node[layer, text width=150mm, below=4mm of l1] (l2) {
+  {\footnotesize\bfseries Извлечение признаков}\\[1mm]
+  аудио-признаки \quad|\quad
+  видео-признаки \quad|\quad
+  текст-признаки
+};
+
+% ── Слой 3: три модуля + общая рамка ────────────────────────────────────
+% Сначала ставим модули, потом дорисовываем рамку «под ними» через background layer
+\node[module, below=10mm of l2.south west, xshift=4mm, anchor=north west] (m31) {
+  \textbf{Техническое качество}\\[0.8mm]
+  аудио \;\secref{sec:method-audio}\\
+  видео \;\secref{sec:method-video}
+};
+\node[module, right=2mm of m31, text width=58mm] (m32) {
+  \textbf{Флаги восприятия} \;\secref{sec:method-flags}\\[0.8mm]
+  Аудио дисбаланс\\
+  Смысловая унылость\\
+  Эмоциональный дисбаланс\\
+  Визуальный шум
+};
+\node[module, right=2mm of m32] (m33) {
+  \textbf{Профиль подачи} \;\secref{sec:method-profile}\\[0.8mm]
+  Две независимые оси:\\
+  академичность \;$\times$\; инструментальность
+};
+\node[ltitle, above=1.5mm of m31.north west, anchor=south west] (l3title) {Слой 3 — анализ};
+
+\begin{scope}[on background layer]
+  \node[layer, fit=(l3title)(m31)(m32)(m33)] (l3) {};
+\end{scope}
+
+% ── Слой 4 ──────────────────────────────────────────────────────────────
+\node[layer, text width=150mm, below=4mm of l3] (l4) {
+  {\footnotesize\bfseries Синтез и выдача}\\[1mm]
+  Нарративная суммаризация \;\secref{sec:method-narrative}
+  \quad+\quad
+  Метрика соответствия запросу \;\secref{sec:method-relevance}\\[1mm]
+  {\itshape выдача:}
+  техническое качество \;\textperiodcentered\;
+  флаги \;\textperiodcentered\;
+  профиль подачи \;\textperiodcentered\;
+  нарратив с таймкодами \;\textperiodcentered\;
+  интегральная оценка
+};
+
+% ── Стрелки ─────────────────────────────────────────────────────────────
+\draw[arr] (ctx) -- node[arrlabel] {влияет на все нижеследующие слои} (l1);
+\draw[arr] (l1) -- (l2);
+\draw[arr] (l2.south) -- (l3.north);
+\draw[arr] (l3.south) -- (l4.north);
+
+\end{tikzpicture}
+\caption{Архитектура системы: четырёхслойный каскад с пользовательским
+контекстом, пронизывающим интерпретацию на всех уровнях.
+Ссылки указывают на параграфы \cref{sec:methodology}, раскрывающие модули.}
+\label{fig:architecture}
+\end{figure}

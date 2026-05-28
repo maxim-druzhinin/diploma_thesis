@@ -16,7 +16,9 @@
 \usepackage{svg}
 % Required package
 \usepackage{tikz}
-\usetikzlibrary{positioning}
+\usetikzlibrary{positioning, arrows.meta, fit, calc, backgrounds}
+
+\usepackage{booktabs}
 
 \usepackage{amsthm,amssymb, amsmath}
 \usepackage[russian]{cleveref}
@@ -41,16 +43,17 @@
 
 % тест библиографии
 %\nocite{*}
+%\cite{openai2024whisperturbo}
 
 \include{items/intro}
 
 \include{items/domain_analysis&problem_statement}
 
-\include{items/system_architecture}
+%\include{items/system_architecture}
 
 \include{items/implementation}
 
-\include{items/conclusion}
+% \include{items/conclusion}
 
 
 \printbibliography[

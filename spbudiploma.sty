@@ -88,12 +88,16 @@
 % Пакет, который позволяет собирать один документ TeX из нескольких
 \usepackage{import}
 
+% Перенос ссылок в библиографии
+\usepackage{xurl}
 % Пакет, реализующий гиперссылки. Никакого расскрашивания
 \usepackage[
     colorlinks=false, % это квадраты около ссылок
     %hidelinks,
     unicode=true
     ]{hyperref}
+
+\Urlmuskip=0mu plus 2mu
 
 \newcommand{\ITEM}{\vspace{-0.2cm}\item}
 \newcommand{\MList}[1]{\par\begin{itemize}#1\end{itemize}}

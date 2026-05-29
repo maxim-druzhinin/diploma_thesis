@@ -49,17 +49,29 @@
 
 \include{items/domain_analysis&problem_statement}
 
-%\include{items/system_architecture}
+\include{items/system_architecture}
 
 \include{items/implementation}
 
 % \include{items/conclusion}
 
 
+% \printbibliography[
+%     heading=bibintoc,
+%     title={Список литературы}
+% ]
+
+% Бориться с переносами длинных названий и ссылок
+\begingroup
+\sloppy
+\emergencystretch=4em
+
 \printbibliography[
     heading=bibintoc,
     title={Список литературы}
 ]
+
+\endgroup
 
 % какая-то хитрая обертка, но с ней как будто хуже всё выглядит
 % \begin{thebibliography}{1}

@@ -1,113 +1,175 @@
-% items/figures/architecture.tex
-% Архитектурная схема для §3 ВКР.
-% Требует: \usepackage{tikz} и tikzlibrary: positioning, arrows.meta, fit, calc, backgrounds
+% ---- data tags ----
+\newcommand{\tagmeta}{\fcolorbox{gray!70}{gray!20}{\scriptsize\bfseries\strut мета}}
+\definecolor{softgreen}{RGB}{190, 230, 190}
+\newcommand{\tagaudio}{\fcolorbox{gray!70}{softgreen}{\scriptsize\bfseries\strut аудио}}
+\newcommand{\tagvideo}{\fcolorbox{gray!70}{orange!35}{\scriptsize\bfseries\strut кадры}}
+\newcommand{\tagtext}{\fcolorbox{gray!70}{blue!25}{\scriptsize\bfseries\strut текст}}
+\newcommand{\tagprofile}{\fcolorbox{gray!70}{violet!25}{\scriptsize\bfseries\strut профиль}}
+\newcommand{\tagmetadata}{\fcolorbox{gray!70}{gray!20}{\scriptsize\bfseries\strut метаданные}}
+\newcommand{\tagvideofull}{\fcolorbox{gray!70}{orange!35}{\scriptsize\bfseries\strut кадры / видео}}
+\newcommand{\tagtextfull}{\fcolorbox{gray!70}{blue!25}{\scriptsize\bfseries\strut транскрипт}}
+\newcommand{\tagprofilefull}{\fcolorbox{gray!70}{violet!25}{\scriptsize\bfseries\strut профиль пользователя}}
 
-\begin{figure}[htbp]
+% ---- local font sizes ----
+% Крути здесь:
+% 8.5pt — размер мелкого текста в буллетах
+% 9.5pt — межстрочный интервал
+\newcommand{\blocktext}{\fontsize{10pt}{10.5pt}\selectfont}
+
+% Размер текста внутри таблицы "Флаги восприятия"
+\newcommand{\flagtext}{\fontsize{9.5pt}{10pt}\selectfont}
+
+\begin{figure}[!htbp]
 \centering
+\setlength{\fboxsep}{1.5pt}
+\setlength{\tabcolsep}{2pt}
+\renewcommand{\arraystretch}{1.18}
 
-% Локальный хелпер: «§ 4.3» как кликабельная ссылка на нужный label
-\providecommand{\secref}[1]{\hyperref[#1]{\textsection\,\ref*{#1}}}
-
+\resizebox{\textwidth}{!}{%
 \begin{tikzpicture}[
-  >=Stealth,
-  font=\footnotesize,
-  every node/.style={font=\footnotesize, align=left},
-  % Большой блок-слой
-  layer/.style={
-    draw=black!55,
-    rounded corners=1.5pt,
-    inner xsep=4mm,
-    inner ysep=2.5mm,
-  },
-  % Внутренний модуль (в Слое 3)
-  module/.style={
-    draw=black!40,
-    rounded corners=1pt,
-    inner xsep=2mm,
-    inner ysep=2mm,
-    text width=44mm,
-  },
-  % Стрелка между слоями
-  arr/.style={->, thick, black!55},
-  % Подпись на стрелке
-  arrlabel/.style={font=\scriptsize\itshape, text=black!60, midway, right=1mm},
-  % Заголовок слоя
-  ltitle/.style={font=\footnotesize\bfseries},
+    >=Latex,
+    arr/.style={->, thick, draw=gray!75},
+    box/.style={
+        draw=gray!65, rounded corners=7pt, thick,
+        fill=gray!5, align=center, inner sep=6pt
+    },
+    module/.style={
+        draw=gray!65, rounded corners=7pt, thick,
+        fill=gray!5, align=center, inner sep=6pt
+    }
 ]
 
-% ── Контекст пользователя ────────────────────────────────────────────────
-\node[layer, text width=150mm, fill=black!3] (ctx) {
-  {\footnotesize\bfseries Контекст пользователя}\\[1mm]
-  Тип пользователя \;\textperiodcentered\;
-  Уровень образования \;\textperiodcentered\;
-  Уровень погружённости \;\textperiodcentered\;
-  Цель просмотра
+% ── Левая колонка ──────────────────────────────────────────────────────
+\node[box, text width=4.6cm, minimum height=2.1cm] (input) at (0, 2.75) {
+    {\bfseries\normalsize Вход}\\[4pt]
+    \begin{minipage}{4.25cm}\blocktext
+    \textbullet\ ссылка на видео\\
+    \textbullet\ роль пользователя\\
+    \textbullet\ уровень образования\\
+    \textbullet\ уровень погружённости\\
+    \textbullet\ цель просмотра
+    \end{minipage}\\[5pt]
+    \tagprofile
 };
 
-% ── Слой 1 ──────────────────────────────────────────────────────────────
-\node[layer, text width=150mm, below=8mm of ctx] (l1) {
-  {\footnotesize\bfseries Сбор данных}\\[1mm]
-  YouTube URL $\to$ метаданные \;\textperiodcentered\;
-  аудиопоток \;\textperiodcentered\;
-  видеокадры \;\textperiodcentered\; транскрипт
+\node[box, text width=4.6cm, minimum height=3.05cm] (prep) at (0, -1.35) {
+    {\bfseries\normalsize Подготовка данных}\\[4pt]
+    \begin{minipage}{4.25cm}\blocktext
+    \textbullet\ загрузка и разбор видео\\
+    \textbullet\ Whisper-транскрипт с таймкодами\\
+    \textbullet\ аудиодорожка и фрагменты\\
+    \textbullet\ выборка кадров и видеопотока
+    \end{minipage}\\[5pt]
+    \tagmeta\hspace{1pt}\tagaudio\hspace{1pt}\tagvideo\hspace{1pt}\tagtext
 };
 
-% ── Слой 2 ──────────────────────────────────────────────────────────────
-\node[layer, text width=150mm, below=4mm of l1] (l2) {
-  {\footnotesize\bfseries Извлечение признаков}\\[1mm]
-  аудио-признаки \quad|\quad
-  видео-признаки \quad|\quad
-  текст-признаки
+% ── Аналитические модули ───────────────────────────────────────────────
+\node[module, text width=5.3cm, minimum height=2.95cm] (tech) at (6.1, 2.35) {
+    {\bfseries\normalsize Техническое качество}\\[4pt]
+    \begin{minipage}{4.95cm}\blocktext
+    \textbullet\ audio\_score: 0--10\\
+    \textbullet\ video\_score: 0--10\\
+    \textbullet\ итог: harmonic mean\\
+    \textbullet\ список ключевых проблем
+    \end{minipage}\\[5pt]
+    \tagaudio\hspace{2pt}\tagvideo
 };
 
-% ── Слой 3: три модуля + общая рамка ────────────────────────────────────
-% Сначала ставим модули, потом дорисовываем рамку «под ними» через background layer
-\node[module, below=10mm of l2.south west, xshift=4mm, anchor=north west] (m31) {
-  \textbf{Техническое качество}\\[0.8mm]
-  аудио \;\secref{sec:method-audio}\\
-  видео \;\secref{sec:method-video}
-};
-\node[module, right=2mm of m31, text width=58mm] (m32) {
-  \textbf{Флаги восприятия} \;\secref{sec:method-flags}\\[0.8mm]
-  Аудио дисбаланс\\
-  Смысловая унылость\\
-  Эмоциональный дисбаланс\\
-  Визуальный шум
-};
-\node[module, right=2mm of m32] (m33) {
-  \textbf{Профиль подачи} \;\secref{sec:method-profile}\\[0.8mm]
-  Две независимые оси:\\
-  академичность \;$\times$\; инструментальность
-};
-\node[ltitle, above=1.5mm of m31.north west, anchor=south west] (l3title) {Слой 3 — анализ};
-
-\begin{scope}[on background layer]
-  \node[layer, fit=(l3title)(m31)(m32)(m33)] (l3) {};
-\end{scope}
-
-% ── Слой 4 ──────────────────────────────────────────────────────────────
-\node[layer, text width=150mm, below=4mm of l3] (l4) {
-  {\footnotesize\bfseries Синтез и выдача}\\[1mm]
-  Нарративная суммаризация \;\secref{sec:method-narrative}
-  \quad+\quad
-  Метрика соответствия запросу \;\secref{sec:method-relevance}\\[1mm]
-  {\itshape выдача:}
-  техническое качество \;\textperiodcentered\;
-  флаги \;\textperiodcentered\;
-  профиль подачи \;\textperiodcentered\;
-  нарратив с таймкодами \;\textperiodcentered\;
-  интегральная оценка
+\node[module, text width=8.4cm, minimum height=3.45cm] (flags) at (13.8, 2.35) {
+    {\bfseries\normalsize Флаги восприятия}\\[2pt]
+    {\flagtext 4 бинарных флага + confidence}\\[4pt]
+    \flagtext
+    \begin{tabular}{@{}p{1.55cm}|p{4.05cm}|p{2.15cm}@{}}
+    \textbf{Логик} &
+    шум, просторечия &
+    \mbox{\tagaudio\ \tagtext} \\
+    \hline
+    \textbf{Сенсорик} &
+    визуальный шум, склейки &
+    \tagvideo \\
+    \hline
+    \textbf{Интуит} &
+    динамика идей и смыслов &
+    \tagtext \\
+    \hline
+    \textbf{Эмоция} &
+    дисбаланс эмоций, жестов &
+    \mbox{\tagaudio\ \tagvideo}
+    \end{tabular}
 };
 
-% ── Стрелки ─────────────────────────────────────────────────────────────
-\draw[arr] (ctx) -- node[arrlabel] {влияет на все нижеследующие слои} (l1);
-\draw[arr] (l1) -- (l2);
-\draw[arr] (l2.south) -- (l3.north);
-\draw[arr] (l3.south) -- (l4.north);
+\node[module, text width=5.3cm, minimum height=2.8cm] (profile) at (6.1, -1.55) {
+    {\bfseries\normalsize Профиль подачи}\\[4pt]
+    \begin{minipage}{4.95cm}\blocktext
+    \textbullet\ академичность: 1--5\\
+    \textbullet\ инструментальность: 1--5\\
+    \textbullet\ итог: координата в 2D
+    \end{minipage}\\[5pt]
+    \tagmeta\hspace{2pt}\tagtext
+};
 
-\end{tikzpicture}
-\caption{Архитектура системы: четырёхслойный каскад с пользовательским
-контекстом, пронизывающим интерпретацию на всех уровнях.
-Ссылки указывают на параграфы \cref{sec:methodology}, раскрывающие модули.}
-\label{fig:architecture}
+\node[module, text width=8.1cm, minimum height=2.8cm] (narr) at (13.6, -1.55) {
+    {\bfseries\normalsize Нарративная суммаризация}\\[4pt]
+    \begin{minipage}{7.65cm}\blocktext
+    \textbullet\ адаптивная сегментация\\
+    \textbullet\ педагогический анализ \\
+    \textbullet\ персонализированный нарратив
+    \end{minipage}\\[5pt]
+    \tagmeta\hspace{2pt}\tagtext\hspace{2pt}\tagprofile
+};
+
+% Рамка вокруг аналитики
+\node[
+    draw=gray!45, rounded corners=8pt, thick,
+    inner sep=10pt,
+    fit=(tech)(flags)(profile)(narr)
+] (mods) {};
+
+% ── Пользовательская выдача снизу ──────────────────────────────────────
+\node[box, text width=17.8cm, minimum height=1.35cm] (out) at (8.2, -4.70) {
+    {\bfseries\normalsize Пользовательская выдача}\\[5pt]
+    \begin{minipage}{17.1cm}\centering\blocktext
+    \ технический скор
+    \quad
+    \textbullet\ флаги восприятия
+    \quad
+    \textbullet\ профиль подачи
+    \quad
+    \textbullet\ темы и таймкоды
+    \quad
+    \textbullet\ итоговый нарратив
+    \end{minipage}
+};
+
+% ── Стрелки ────────────────────────────────────────────────────────────
+\coordinate (modsLeftMid) at (mods.west |- prep.east);
+\coordinate (modsBottomMid) at (mods.south);
+\coordinate (outTopMid) at (out.north);
+
+\draw[arr] (input.south) -- (prep.north);
+\draw[arr] (prep.east) -- (modsLeftMid);
+
+% стрелка из общего аналитического контура вниз в пользовательскую выдачу
+\draw[arr] (modsBottomMid) -- (outTopMid);
+
+% ── Легенда ────────────────────────────────────────────────────────────
+\node[box, text width=17.8cm, minimum height=0.65cm] (legend) at (8.2, -6.95) {
+    {\bfseries\normalsize Типы данных:}
+    \hspace{6pt}
+    \tagmetadata\hspace{4pt}
+    \tagaudio\hspace{4pt}
+    \tagvideofull\hspace{4pt}
+    \tagtextfull\hspace{4pt}
+    \tagprofilefull
+};
+
+\end{tikzpicture}%
+}
+
+\caption{Логическая схема системы анализа образовательных видео.
+На вход подаются ссылка на видео и пользовательский профиль; после подготовки данных
+мультимодальные представления параллельно используются аналитическими модулями,
+результаты которых агрегируются в пользовательскую выдачу.
+Цветовые метки показывают, какие типы данных использует каждый модуль.}
+\label{fig:system-logical-scheme}
 \end{figure}
